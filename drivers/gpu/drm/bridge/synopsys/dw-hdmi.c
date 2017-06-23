@@ -1981,10 +1981,6 @@ static void hdmi_av_composer(struct dw_hdmi *hdmi,
 		HDMI_FC_INVIDCONF_IN_I_P_INTERLACED :
 		HDMI_FC_INVIDCONF_IN_I_P_PROGRESSIVE;
 
-	inv_val |= hdmi->sink_is_hdmi ?
-		HDMI_FC_INVIDCONF_DVI_MODEZ_HDMI_MODE :
-		HDMI_FC_INVIDCONF_DVI_MODEZ_DVI_MODE;
-
 	hdmi_writeb(hdmi, inv_val, HDMI_FC_INVIDCONF);
 
 	hdisplay = mode->hdisplay;
@@ -2282,6 +2278,9 @@ static int dw_hdmi_setup(struct dw_hdmi *hdmi, struct drm_display_mode *mode)
 	/* not for DVI mode */
 	if (hdmi->sink_is_hdmi) {
 		dev_dbg(hdmi->dev, "%s HDMI mode\n", __func__);
+		hdmi_modb(hdmi, HDMI_FC_INVIDCONF_DVI_MODEZ_HDMI_MODE,
+			  HDMI_FC_INVIDCONF_DVI_MODEZ_HDMI_MODE,
+			  HDMI_FC_INVIDCONF);
 
 		/* HDMI Initialization Step F - Configure AVI InfoFrame */
 		hdmi_config_AVI(hdmi, mode);
