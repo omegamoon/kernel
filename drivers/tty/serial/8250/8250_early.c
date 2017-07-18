@@ -37,7 +37,7 @@
 #include <asm/io.h>
 #include <asm/serial.h>
 
-static unsigned int __init serial8250_early_in(struct uart_port *port, int offset)
+static unsigned int serial8250_early_in(struct uart_port *port, int offset)
 {
 	switch (port->iotype) {
 	case UPIO_MEM:
@@ -53,7 +53,7 @@ static unsigned int __init serial8250_early_in(struct uart_port *port, int offse
 	}
 }
 
-static void __init serial8250_early_out(struct uart_port *port, int offset, int value)
+static void serial8250_early_out(struct uart_port *port, int offset, int value)
 {
 	switch (port->iotype) {
 	case UPIO_MEM:
@@ -85,13 +85,13 @@ static void __init wait_for_xmitr(struct uart_port *port)
 	}
 }
 
-static void __init serial_putc(struct uart_port *port, int c)
+static void serial_putc(struct uart_port *port, int c)
 {
 	wait_for_xmitr(port);
 	serial8250_early_out(port, UART_TX, c);
 }
 
-static void __init early_serial8250_write(struct console *console,
+static void early_serial8250_write(struct console *console,
 					const char *s, unsigned int count)
 {
 	struct earlycon_device *device = console->data;
